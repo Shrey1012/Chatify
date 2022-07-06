@@ -4,6 +4,8 @@ import axios from "axios";
 
 import signinImage from "../assets/signup.jpg";
 
+const cookies = new Cookies();
+
 const initialState = {
   fullName: "",
   username: "",
@@ -21,10 +23,36 @@ const Auth = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
-  }
+
+    const { fullName, username, password, phoneNumber, avatarURL } = form;
+
+    const URL = "http://localhost:5000/auth";
+
+    const {
+      data: { token, userId, hashedPassword },
+    } = await axios.post(`${URL}/${isSignup ? "signup" : "login"}`, {
+      username,
+      password,
+      fullName,
+      phoneNumber,
+      avatarURL,
+    });
+
+    cookies.set("token", token);
+    cookies.set("userId", userId);
+    cookies.set("fullName", fullName);
+    cookies.set("username", username);
+
+    if (isSignup) {
+      cookies.set("phoneNumber", phoneNumber);
+      cookies.set("avatarURL", avatarURL);
+      cookies.set("hashedPassword", hashedPassword);
+    }
+
+    window.location.reload();
+  };
 
   const switchMode = () => {
     setisSignup((prevIsSignup) => !prevIsSignup);
@@ -108,7 +136,7 @@ const Auth = () => {
               </div>
             )}
             <div className="auth__form-container_fields-content_button">
-              <button>{isSignup ? "Sign In" : "Sign Up"}</button>
+              <button>{isSignup ? "Sign Up" : "Sign In"}</button>
             </div>
           </form>
           <div className="auth__form-container_fields-account">
