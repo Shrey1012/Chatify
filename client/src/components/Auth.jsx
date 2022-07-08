@@ -9,10 +9,10 @@ const cookies = new Cookies();
 const initialState = {
   fullName: "",
   username: "",
-  phoneNumber: "",
-  avatarURL: "",
   password: "",
   confirmPassword: "",
+  phoneNumber: "",
+  avatarURL: "",
 };
 
 const Auth = () => {
@@ -26,13 +26,12 @@ const Auth = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { fullName, username, password, phoneNumber, avatarURL } = form;
+    const {username, password, phoneNumber, avatarURL } = form;
 
     const URL = "http://localhost:5000/auth";
 
     const {
-      data: { token, userId, hashedPassword },
-    } = await axios.post(`${URL}/${isSignup ? "signup" : "login"}`, {
+      data: { token, userId, hashedPassword,fullName }} = await axios.post(`${URL}/${isSignup ? "signup" : "login"}`, {
       username,
       password,
       fullName: form.fullName,
@@ -59,7 +58,7 @@ const Auth = () => {
   };
 
   return (
-    <div className="auth__from-container">
+    <div className="auth__form-container">
       <div className="auth__form-container_fields">
         <div className="auth__form-container_fields-content">
           <p>{isSignup ? "Sign Up" : "Sign In"}</p>
