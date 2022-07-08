@@ -35,7 +35,7 @@ const Auth = () => {
     } = await axios.post(`${URL}/${isSignup ? "signup" : "login"}`, {
       username,
       password,
-      fullName,
+      fullName: form.fullName,
       phoneNumber,
       avatarURL,
     });
