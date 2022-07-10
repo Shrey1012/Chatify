@@ -21,7 +21,7 @@ app.get('/',(req,res)=>{
     res.send('hello world');
 });
 
-app.post('./',(req,res)=>{
+app.post('/',(req,res)=>{
     const {message, user: sender, type, members} = req.body;
 
     if(type === 'message.new'){
